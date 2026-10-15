@@ -15,13 +15,13 @@ export default function QuestionRenderer({
   onNext,
   canPrev,
 }) {
+  // State for step-matching interaction if steps are present
+  const [selectedStepReasons, setSelectedStepReasons] = useState({});
+
   if (!question) return null;
 
   const { category, questionText, options, visual, visualData, hint1, hint2, steps } = question;
   const categoryTag = category || 'GEOMETRY RANGER';
-
-  // State for step-matching interaction if steps are present
-  const [selectedStepReasons, setSelectedStepReasons] = useState({});
 
   function handleSelectStepReason(stepIdx, reasonKey) {
     if (isLocked) return;

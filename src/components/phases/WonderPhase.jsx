@@ -57,7 +57,7 @@ export default function WonderPhase({ state, dispatch }) {
 
           <div className="wonder-question-card">
             <p className="body-text wonder-q">
-              A new savanna enclosure sign says <strong className="wonder-em">'RECTANGLE'</strong> because the builder checked that opposite sides are equal…
+              A new savanna enclosure sign says <strong className="wonder-em">RECTANGLE</strong> because the builder checked that opposite sides are equal.
             </p>
             <p className="body-text wonder-q">
               A ranger isn't convinced! It could be a tilted parallelogram. <span className="wonder-highlight">One single measurement would settle it</span> — which one?

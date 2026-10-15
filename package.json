@@ -8,6 +8,8 @@
     "build": "vite build",
     "generate-audio": "node scripts/generate_audio.js",
     "clean-audio": "node scripts/clean_audio.js",
+    "test:audio": "node scripts/audio_parity_audit.js",
+    "audit": "node scripts/qa_audit.js",
     "lint": "oxlint",
     "preview": "vite preview"
   },

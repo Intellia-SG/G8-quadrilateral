@@ -1,9 +1,10 @@
-// src/components/IntroScreen.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import './IntroScreen.css';
 import { generateSessionQuestions } from '../utils/shuffle.js';
 import questionBank from '../data/questionBank.js';
 import gigiImg from '../assets/gigi.png';
+import { useAudio } from '../hooks/useAudio.js';
+import { introNarration } from '../utils/narration.js';
 
 const JOURNEY = [
   { num: '01', icon: '🔍', label: 'Wonder',   desc: 'The mystery' },
@@ -15,13 +16,21 @@ const JOURNEY = [
 
 export default function IntroScreen({ state, dispatch }) {
   const hasSaved = state?.phaseComplete && Object.values(state.phaseComplete).some(Boolean);
+  const { narrate, stopAll } = useAudio(state?.audioEnabled ?? true);
+
+  useEffect(() => {
+    narrate(introNarration());
+    return () => stopAll();
+  }, [narrate, stopAll]);
 
   function startFresh() {
+    stopAll();
     dispatch({ type: 'LOAD_QUESTIONS', payload: generateSessionQuestions(questionBank) });
     dispatch({ type: 'SET_PHASE', payload: 'wonder' });
   }
 
   function resumeSession() {
+    stopAll();
     dispatch({ type: 'SET_PHASE', payload: state.savedPhase || 'wonder' });
   }
 
@@ -45,7 +54,7 @@ export default function IntroScreen({ state, dispatch }) {
         </div>
         <div className="intro-speech-content">
           <p className="speech-quote">
-            "Stop naming shapes by how they LOOK — start proving them by what can be SHOWN!"
+            "Stop naming shapes by how they look — start proving them by what can be shown!"
           </p>
           <p className="speech-desc">
             Classify the six special quadrilaterals, find missing angles with geometric proof, solve algebraic equations, and conquer the family tree!
@@ -61,7 +70,10 @@ export default function IntroScreen({ state, dispatch }) {
             <React.Fragment key={j.num}>
               <div
                 className="journey-step-item clickable-step"
-                onClick={() => dispatch({ type: 'SET_PHASE', payload: j.label.toLowerCase() === 'practice' ? 'play' : j.label.toLowerCase() })}
+                onClick={() => {
+                  stopAll();
+                  dispatch({ type: 'SET_PHASE', payload: j.label.toLowerCase() === 'practice' ? 'play' : j.label.toLowerCase() });
+                }}
                 role="button"
                 tabIndex={0}
                 title={`Click to open ${j.label} phase`}
